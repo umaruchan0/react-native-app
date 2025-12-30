@@ -37,9 +37,11 @@ export default function SignUpScreen() {
       // and capture OTP code
       setPendingVerification(true)
     } catch (err) {
-      // See https://clerk.com/docs/custom-flows/error-handling
-      // for more info on error handling
-      console.error(JSON.stringify(err, null, 2))
+      if (err.errors?.[0]?.code === "form_identifier_exists") {
+        setError("This email is already taken")
+      } else {
+        setError("An error occurred. Please try again.")
+      }
     }
   }
 
@@ -127,7 +129,7 @@ export default function SignUpScreen() {
               size={20}
               color={COLORS.expense}
             />
-            <Text style={styles.errorText}>{"Something went wrong"}</Text>
+            <Text style={styles.errorText}>{error}</Text>
             <TouchableOpacity onPress={() => setError("")}>
               <Ionicons
                 name="close"
@@ -157,14 +159,14 @@ export default function SignUpScreen() {
         <TouchableOpacity style={styles.button} onPress={onSignUpPress}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
-        <View style={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
-          <View style={styles.footerContainer}>
-            <Text style={styles.footerText}>Already have an account</Text>
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text style={styles.linkText}>Sign in</Text>
-            </TouchableOpacity>
-          </View>
+
+        <View style={styles.footerContainer}>
+          <Text style={styles.footerText}>Already have an account</Text>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Text style={styles.linkText}>Sign in</Text>
+          </TouchableOpacity>
         </View>
+
       </View>
     </KeyboardAwareScrollView>
 
