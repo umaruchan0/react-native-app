@@ -37,10 +37,20 @@ export default function Page() {
         console.error(JSON.stringify(signInAttempt, null, 2))
       }
     } catch (err) {
-      if (err.errors?.[0]?.code === "form_password_incorrect") {
+      const errorCode = err.errors?.[0]?.code;
+
+      if (errorCode === "form_identifier_not_found") {
+        setError("Email not found. Please check your email.");
+      }
+      else if (errorCode === "form_param_format_invalid") {
+        setError("Please enter a valid email address.");
+      }
+      else if (errorCode === "form_password_incorrect") {
         setError("Password is incorrect. Please try again.");
-      } else {
+      }
+      else {
         setError("An error occurred. Please try again.");
+        console.log(err.errors?.[0]?.code)
       }
     }
   }
