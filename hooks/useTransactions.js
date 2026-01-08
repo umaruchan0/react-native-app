@@ -1,14 +1,14 @@
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
 
-const API_URL = "http://192.168.0.101:3000/api";
+const API_URL = "http://192.168.0.104:3000/api";
 
 export const useTransactions = (userId) => {
   const [transactions, setTransactions] = useState([]);
   const [summary, setSummary] = useState({
     balance: 0,
     income: 0,
-    expenses: 0,
+    expense: 0,
   });
   const [isLoading, setIsLoading] = useState(true);
 
